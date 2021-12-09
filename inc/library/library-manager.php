@@ -40,17 +40,17 @@ class Library_Manager {
 		include_once __DIR__ . '/templates/template.php';
 	}
 
-        public static function preview_styles() {
+    public static function preview_styles() {
             wp_enqueue_style(
 			'ultraaddons-libr-templt',
 			self::ULTRA_ADDONS_TEMPLATE_ASSETS . 'css/custom.css',
 			null,
 			ULTRA_ADDONS_VERSION
 		);
-        }
+    }
 	public static function enqueue_assets() {
                 
-                wp_enqueue_style(
+       	wp_enqueue_style(
 			'ultraaddons-library-editor',
 			self::ULTRA_ADDONS_TEMPLATE_ASSETS . 'css/editor.min.css',
 			null,
@@ -85,13 +85,29 @@ class Library_Manager {
 			ULTRA_ADDONS_VERSION,
 			true
 		);
-                
+        
+		$additional_library = [
+			'status' => false,
+			'button' => [
+				'text'	=> esc_html__( "Theme Demo", 'ultraaddons' ),
+				'icon'	=> 'uicon-ultraaddons',
+			],
+			'tabs' => [
+				'section' => esc_html__( "Blog", 'ultraaddons' ),
+				'page' => esc_html__( "Page", 'ultraaddons' ),
+				'landing' => esc_html__( "Landing", 'ultraaddons' ),
+			],
+
+		];
+
+		$additional_library = apply_filters( 'eldm_library_basic_data', $additional_library );
+		
         $localize_data = [
-			'placeholder_widgets' => Widgets_Manager::proWidgets(),
-			'hasPro'                  => ultraaddons_is_pro(),
-            'HELP_ULR'                => ULTRA_ADDONS_WIDGET_HELP_ULR,
-			'editor_nonce'            => wp_create_nonce( 'ua_editor_nonce' ),
-			'dark_stylesheet_url'     => self::ULTRA_ADDONS_TEMPLATE_ASSETS . 'css/editor-dark.min.css',
+			'placeholder_widgets' 		=> Widgets_Manager::proWidgets(),
+			'hasPro'                  	=> ultraaddons_is_pro(),
+            'HELP_ULR'                	=> ULTRA_ADDONS_WIDGET_HELP_ULR,
+			'editor_nonce'            	=> wp_create_nonce( 'ua_editor_nonce' ),
+			'dark_stylesheet_url'     	=> self::ULTRA_ADDONS_TEMPLATE_ASSETS . 'css/editor-dark.min.css',
 			'i18n' => [
 				'iconTitlePreviewPage'      => esc_html__( 'Library', 'ultraaddons' ),
 				'promotionDialogHeader'     => esc_html__( '%s Widget', 'ultraaddons' ),
@@ -101,6 +117,7 @@ class Library_Manager {
 				'templatesNoResultsTitle'   => esc_html__( 'No Results Found', 'ultraaddons' ),
 				'templatesNoResultsMessage' => esc_html__( 'Please make sure your search is spelled correctly or try a different words.', 'ultraaddons' ),
 			],
+			'additional_library' => $additional_library,
 		];
                 
         wp_localize_script(
